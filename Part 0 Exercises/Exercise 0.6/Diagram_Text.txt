@@ -1,0 +1,4 @@
+# created by Cameron Knopp
+
+browser->server: HTTP POST {content: "hi", date: "2020-10-06T21:11:37.889Z"} https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server->browser: HTTP Status Code 201
