@@ -13,17 +13,29 @@ const DisplayPercent = (props) => (
   </div>
 )
 
-const Statistics = (props) =>
-(
-  <div>
-    <DisplayItem name={"good"} number={props.good} />
-    <DisplayItem name={"neutral"} number={props.neutral} />
-    <DisplayItem name={"bad"} number={props.bad} />
-    <DisplayItem name={"all"} number={props.all} />
-    <DisplayItem name={"average"} number={props.average} />
-    <DisplayPercent name={"positive"} number={props.positive} />
-  </div>
-)
+const Statistics = ({good, neutral, bad, all, average, positive}) =>
+{
+  if (good === 0 && neutral === 0 && bad === 0 && all === 0 && average === 0 && positive === 0)
+  {
+    return (
+      <div>
+        No feedback given
+      </div>
+    )
+  }
+  else {
+  return (
+    <div>
+      <DisplayItem name={"good"} number={good} />
+      <DisplayItem name={"neutral"} number={neutral} />
+      <DisplayItem name={"bad"} number={bad} />
+      <DisplayItem name={"all"} number={all} />
+      <DisplayItem name={"average"} number={average} />
+      <DisplayPercent name={"positive"} number={positive} />
+    </div>
+  )
+  }
+}
 
 const App = () => {
   // save clicks of each button to own state
