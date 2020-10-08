@@ -7,6 +7,7 @@ const App = (props) => {
   let a = new Array(6).fill(0)
   const [selected, setSelected] = useState(0)
   const [vote, setVote] = useState(a)
+  const [mostVotesIndex, setMostVotes] = useState(0)
 
   const getAnecdote = () => {
     let r = Math.floor(Math.random()*props.anecdotes.length)
@@ -17,18 +18,48 @@ const App = (props) => {
     const copy = [...vote]
     copy[selected]+=1
     setVote(copy)
+    findMaxIndex()
+  }
+
+  const findMaxIndex = () => {
+    let max = 0
+    let maxIndex = 0
+    let v = vote
+    
+    for (let i = 0; i < v.length; i++)
+    {
+      if (v[i] > max)
+      {
+        max = v[i]
+        maxIndex = i
+      }
+    }
+    setMostVotes(maxIndex)
   }
 
   return (
     <div>
-      <p>{props.anecdotes[selected]}</p>
-      <p>has {vote[selected]} votes</p>
+      <h2>
+        Anecdote of the day
+      </h2>
+      <p>
+        {props.anecdotes[selected]}
+      </p>
+      <p>
+        has {vote[selected]} votes
+      </p>
+
       <button onClick={incrementVote}>
         vote
       </button>
       <button onClick={getAnecdote}>
         next anecdote
       </button>
+
+      <h2>Anecdote with most votes</h2>
+      <p>
+        {props.anecdotes[mostVotesIndex]}
+      </p>
     </div>
   )
 }
