@@ -11,15 +11,25 @@ const Button = (props) => (
 )
 
 const Statistic = (props) => (
-  <div>
-    {props.name} {props.number}
-  </div>
+  <tr>
+    <td>
+      {props.name} 
+    </td>
+    <td>
+      {props.number}
+    </td>
+  </tr>
 )
 
 const DisplayPercent = (props) => (
-  <div>
-    {props.name} {(props.number)} %
-  </div>
+  <tr>
+    <td>
+      {props.name} 
+    </td>
+    <td>
+      {(props.number)} %
+    </td>
+  </tr>
 )
 
 const Statistics = ({good, neutral, bad, all, average, positive}) =>
@@ -34,14 +44,16 @@ const Statistics = ({good, neutral, bad, all, average, positive}) =>
   }
   else {
   return (
-    <div>
-      <Statistic name={"good"} number={good} />
-      <Statistic name={"neutral"} number={neutral} />
-      <Statistic name={"bad"} number={bad} />
-      <Statistic name={"all"} number={all} />
-      <Statistic name={"average"} number={average} />
-      <DisplayPercent name={"positive"} number={positive} /> 
-    </div>
+    <table>
+      <tbody>
+        <Statistic name={"good"} number={good} />
+        <Statistic name={"neutral"} number={neutral} />
+        <Statistic name={"bad"} number={bad} />
+        <Statistic name={"all"} number={all} />
+        <Statistic name={"average"} number={average.toFixed(1)} />
+        <DisplayPercent name={"positive"} number={positive.toFixed(1)} /> 
+      </tbody>
+    </table>
   )
   }
 }
