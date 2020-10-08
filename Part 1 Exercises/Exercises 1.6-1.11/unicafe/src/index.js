@@ -1,7 +1,16 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
+import { checkPropTypes } from 'prop-types'
 
-const DisplayItem = (props) => (
+const Button = (props) => (
+  <div>
+    <button onClick={props.onClick}>
+      {props.name}
+    </button>
+  </div>
+)
+
+const Statistic = (props) => (
   <div>
     {props.name} {props.number}
   </div>
@@ -26,12 +35,12 @@ const Statistics = ({good, neutral, bad, all, average, positive}) =>
   else {
   return (
     <div>
-      <DisplayItem name={"good"} number={good} />
-      <DisplayItem name={"neutral"} number={neutral} />
-      <DisplayItem name={"bad"} number={bad} />
-      <DisplayItem name={"all"} number={all} />
-      <DisplayItem name={"average"} number={average} />
-      <DisplayPercent name={"positive"} number={positive} />
+      <Statistic name={"good"} number={good} />
+      <Statistic name={"neutral"} number={neutral} />
+      <Statistic name={"bad"} number={bad} />
+      <Statistic name={"all"} number={all} />
+      <Statistic name={"average"} number={average} />
+      <DisplayPercent name={"positive"} number={positive} /> 
     </div>
   )
   }
@@ -76,17 +85,10 @@ const App = () => {
   return (
     <div>
       <h1>give feedback</h1>
-      <button onClick={() => increaseGood()}>
-        good
-      </button>
 
-      <button onClick={() => increaseNeutral()}>
-        neutral
-      </button>
-
-      <button onClick={() => increaseBad()}>
-        bad
-      </button>
+      <Button onClick={increaseGood} name="good" />
+      <Button onClick={increaseNeutral} name="neutral" />
+      <Button onClick={increaseBad} name="bad" />
 
       <h2>statistics</h2>
       <Statistics good={good} bad={bad} neutral={neutral} all={all} average={average} positive={positive} />
