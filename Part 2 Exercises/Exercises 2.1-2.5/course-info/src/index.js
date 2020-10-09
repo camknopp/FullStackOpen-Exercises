@@ -1,21 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
-const Course = (props) => {
-  const { course } = props
-  const { parts } = course
-  let sum = parts.reduce((a, b) => {
-    return a + b.exercises
-  }, 0)
-
-  return (
-    <div>
-      <h2>{course.name}</h2>
-      {parts.map(part => <p key={part.id}>{part.name} {part.exercises}</p>)}
-      <b>total of {sum} exercises</b>
-    </div>
-  )
-}
+import Course from './components/Course'
 
 const App = () => {
   const courses = [
@@ -67,9 +52,9 @@ const App = () => {
   return (
   <div>
     <h1>Web development curriculum</h1>
-    {courses.map(course => <p key={course.id}>
+    {courses.map(course => <div key={course.id}>
       <Course course={course} />
-    </p>)}
+    </div>)}
   </div>
   ) 
 }
