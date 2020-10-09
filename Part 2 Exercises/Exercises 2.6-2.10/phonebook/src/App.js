@@ -12,7 +12,18 @@ const App = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    setPersons(persons.concat({name: newName}))
+    let n = []
+    if (persons.length > 0)
+    {
+    persons.forEach(person => n.push(person.name))
+    console.log(n);
+    }
+
+    if (n.includes(newName)) {
+      window.alert(newName + " is already added to phonebook")
+    } else {
+      setPersons(persons.concat({name: newName}))
+    }
   }
 
   return (
