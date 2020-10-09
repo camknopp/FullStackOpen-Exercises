@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import DisplayFilteredItems from './components/DisplayFilteredItems'
+import PersonForm from "./components/PersonForm"
+import FilterBox from "./components/FilterBox"
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -38,41 +41,21 @@ const App = () => {
     }
   }
 
-  const displayFilteredItems = () => {
-    let n = []
-    
-    for (let i = 0; i < persons.length; i++) {
-      if ((persons[i].name.toLowerCase()).includes(newFilter.toLowerCase())) {
-          n.push(persons[i])
-      }
-    }
-  
-    return (
-      n.map(person => <div key={person.name}>{person.name} {person.number}</div>)
-    )
-  }
-
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input value={newFilter} onChange={handleFilterChange} />
-      </div>
+      
+      <FilterBox filterValue={newFilter} handleFilterChange={handleFilterChange} />
+      
       <h2>add a new</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange}/>
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+
+      <PersonForm handleSubmit={handleSubmit} nameValue={newName}
+      nameOnChange={handleNameChange} numberValue={newNumber} 
+      numberOnChange={handleNumberChange} />
+
       <h2>Numbers</h2>
-      <div>{displayFilteredItems()}</div>
-      {/* {persons.map(person => <div key={person.name}>{person.name} {person.number}</div>)} */}
+
+      <DisplayFilteredItems persons={persons} filter={newFilter} />
     </div>
   )
 }
