@@ -1,15 +1,24 @@
-import React from 'react'
+import React, {useState} from 'react'
 import axios from 'axios'
   
 const DisplayFilteredItems = ({countries, filter}) => {
     let n = []
-    
-    for (let i = 0; i < countries.length; i++) {
-    if ((countries[i].name.toLowerCase()).includes(filter.toLowerCase())) {
-        n.push(countries[i])
+
+    const [ showCountry, setShowCountry ] = useState("")
+
+    const handleShowCountry = (event) => {
+        console.log(event.target.value)
+        setShowCountry(event.target.value)
     }
 
+
+    for (let i = 0; i < countries.length; i++) {
+    if ((countries[i].name.toLowerCase())
+        .includes(filter.toLowerCase())) {
+        n.push(countries[i])
+        }
     }
+
     if (n.length > 10) {
         return (
             <div>
@@ -21,7 +30,8 @@ const DisplayFilteredItems = ({countries, filter}) => {
             n.map(country => <div key={country.name}>
                 
                 {country.name}
-                
+                <button type="submit" onClick={handleShowCountry} name={country.name}>show</button>
+
                 </div>)
             )
     } else if (n.length === 1) {
