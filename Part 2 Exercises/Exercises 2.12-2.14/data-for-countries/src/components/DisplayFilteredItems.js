@@ -3,6 +3,16 @@ import axios from 'axios'
   
 const DisplayFilteredItems = ({countries, filter, setNewFilter}) => {
     let n = []
+    var weather
+
+    const getWeather = (query) => {
+        return axios.get(query)
+        .then(response => {
+        console.log(response.data.current)
+        weather = response.data.current
+       // return response.data.current.temperature
+        })
+    }
 
     for (let i = 0; i < countries.length; i++) {
     if ((countries[i].name.toLowerCase())
@@ -28,34 +38,27 @@ const DisplayFilteredItems = ({countries, filter, setNewFilter}) => {
             )
     } else if (n.length === 1) {
         let country = n[0]
+        console.log(country)
         let capital = ""
+        let query = ""
         let languages = country.languages
-        let weather
         let imageAltText = "flag of " + country.name
-        let ACCESS_KEY = process.env.REACT_APP_API_KEY
-        console.log(ACCESS_KEY)
+        // let ACCESS_KEY = process.env.REACT_APP_API_KEY
+        let ACCESS_KEY = '2c3213f52cbfd44e6cac39475e85edd4'
 
         if (country.capital === '') {
             capital = 'DNE'
-            axios.get('https://api.weatherstack.com/current', {
-                access_key: ACCESS_KEY,
-                query: country.name
-            })
-            .then(response => {
-            weather = response.data
-            console.log(weather)
-            })
+            query = "http://api.weatherstack.com/current?access_key=" 
+            + ACCESS_KEY + "&query=" + country.latlng
         } else {
             capital = country.capital
-            axios.get('https://api.weatherstack.com/current', {
-                access_key: ACCESS_KEY,
-                query: country.capital
-            })
-            .then(response => {
-            weather = response
-            console.log(weather)
-            })
+            query = "http://api.weatherstack.com/current?access_key=" 
+            + ACCESS_KEY + "&query=" + country.capital + ", " + country.name
         }
+
+        //let weather = getWeather(query)
+        getWeather(query)
+        console.log(weather)
 
         return (
             <div>
