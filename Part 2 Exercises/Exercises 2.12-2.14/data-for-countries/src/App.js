@@ -23,7 +23,7 @@ const App = () => {
     <div> 
       <FilterBox filterValue={newFilter} handleFilterChange={handleFilterChange} />
       <br></br>
-      <DisplayFilteredItems countries={countries} filter={newFilter} />
+      <DisplayFilteredItems countries={countries} filter={newFilter} setNewFilter={setNewFilter}/>
     </div>
   )
 }
