@@ -4,13 +4,15 @@ import PersonForm from "./components/PersonForm"
 import FilterBox from "./components/FilterBox"
 import personService from "./services/persons"
 import Notification from "./components/Notification"
+import ErrorMessage from "./components/ErrorMessage"
 
 const App = () => {
 	const [persons, setPersons] = useState([])
 	const [newName, setNewName] = useState("")
 	const [newNumber, setNewNumber] = useState("")
 	const [newFilter, setNewFilter] = useState("")
-	const [message, setMessage] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
 	useEffect(() => {
 		personService.getAll().then(response => {
@@ -65,7 +67,17 @@ const App = () => {
 						}, 5000)
 						setPersons(r.data)
 					})
-				})
+        })
+        .catch(error => {
+          setErrorMessage(`Information of ${newName} has already been removed from the server`)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+          personService.getAll().then(response => {
+            setPersons(response.data)
+          })
+
+        })
 			}
 		} else {
 			// name does not already exist in phonebook, so create new entry
@@ -85,6 +97,7 @@ const App = () => {
 		<div>
 			<h2>Phonebook</h2>
 			<Notification message={message} />
+      <ErrorMessage message={errorMessage} />
 
 			<FilterBox
 				filterValue={newFilter}
