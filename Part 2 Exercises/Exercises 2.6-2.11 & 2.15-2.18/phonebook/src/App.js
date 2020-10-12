@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import DisplayFilteredItems from './components/DisplayFilteredItems'
 import PersonForm from "./components/PersonForm"
 import FilterBox from "./components/FilterBox"
@@ -35,7 +34,7 @@ const App = () => {
     let n = []
     if (persons.length > 0)
     {
-    persons.forEach(person => n.push(person.name))
+      persons.forEach(person => n.push(person.name))
     }
 
     if (n.includes(newName)) {
@@ -48,7 +47,10 @@ const App = () => {
 
       personService.create(personObject)
       .then(response => {
-        setPersons(persons.concat(personObject))
+        personService.getAll()
+        .then(r => {
+          setPersons(r)
+        })
       })
     }
   }
@@ -67,7 +69,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <DisplayFilteredItems persons={persons} filter={newFilter} />
+      <DisplayFilteredItems persons={persons} setPersons={setPersons} filter={newFilter} />
     </div>
   )
 }

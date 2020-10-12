@@ -1,4 +1,4 @@
-import React from 'react'
+//import React from 'react'
 import axios from 'axios'
 
 const baseurl = 'http://localhost:3001/persons'
@@ -13,7 +13,11 @@ const create = (personObject) => {
 }
 
 const update = (newObject, id) => {
-    return axios.put('${baseurl}/${id}', newObject)
+    return axios.put(`${baseurl}/${id}`, newObject)
 }
 
-export default { getAll, create, update }
+const remove = (id) => {
+    return axios.delete(`${baseurl}/${id}`)
+}
+
+export default { getAll, create, update, remove }
