@@ -3,12 +3,14 @@ import DisplayFilteredItems from "./components/DisplayFilteredItems"
 import PersonForm from "./components/PersonForm"
 import FilterBox from "./components/FilterBox"
 import personService from "./services/persons"
+import Notification from "./components/Notification"
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState("")
   const [newNumber, setNewNumber] = useState("")
   const [newFilter, setNewFilter] = useState("")
+  const [message, setMessage] = useState("hey")
 
   useEffect(() => {
     personService.getAll().then(response => {
@@ -16,11 +18,10 @@ const App = () => {
     })
   }, [])
 
+  // finds the corresponding id for a given name in the database
   const findPersonID = name => {
-    console.log("searching for id of ", name)
     for (let i = 0; i < persons.length; i++) {
       if (persons[i].name === name) {
-        console.log(`${name} is at id ${persons[i].id}`)
         return persons[i].id
       }
     }
@@ -50,6 +51,7 @@ const App = () => {
       number: newNumber
     }
 
+    // check if the name already exists in the phonebook
     if (n.includes(newName)) {
       let msg = `Replace ${newName}'s old number with a new one?`
       if (window.confirm(msg)) {
@@ -57,13 +59,22 @@ const App = () => {
         let personID = findPersonID(newName)
         personService.update(personObject, personID).then(response => {
           personService.getAll().then(r => {
+            setMessage(`Added ${newName}`)
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
             setPersons(r.data)
           })
         })
       }
     } else {
+      // name does not already exist in phonebook, so create new entry
       personService.create(personObject).then(response => {
         personService.getAll().then(r => {
+          setMessage(`Added ${newName}`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
           setPersons(r.data)
         })
       })
@@ -73,6 +84,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
 
       <FilterBox
         filterValue={newFilter}

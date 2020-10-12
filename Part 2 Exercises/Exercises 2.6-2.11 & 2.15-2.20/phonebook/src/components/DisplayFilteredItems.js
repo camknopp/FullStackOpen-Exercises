@@ -1,5 +1,5 @@
 import React from 'react'
-import personService from "./../services/persons"
+import personService from "../services/persons"
   
 const DisplayFilteredItems = ({persons, setPersons, filter}) => {
     // display the phonebook entries according to specified filter
