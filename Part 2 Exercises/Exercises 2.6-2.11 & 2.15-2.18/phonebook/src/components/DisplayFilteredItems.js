@@ -8,18 +8,22 @@ const DisplayFilteredItems = ({persons, setPersons, filter}) => {
     
     // handler for when the 'delete' button is clicked
     // deletes the corresponding entry in the database
-    const deleteClicked = (id) => {
-        console.log("button pressed for ", id)
+    const deleteClicked = (id, name) => {
+        if(window.confirm(`Delete ${name}?`)) {
+            console.log("button pressed for ", id)
 
-        personService.remove(id)
-        .then(response => {
-            console.log("removing ", id)
-        })
-
-        let tempPersons = personService.getAll()
-        .then(response => {
-            setPersons(tempPersons)
-        })
+            personService.remove(id)
+            .then(response => {
+                console.log("removing ", id)
+                personService.getAll()
+                .then(response => {
+                    setPersons(response.data)
+                    console.log("persons:", persons)
+                })
+            })
+        } else {
+            return
+        }
     }
     
     // filters out entries according to specified filter
@@ -34,7 +38,7 @@ const DisplayFilteredItems = ({persons, setPersons, filter}) => {
     n.map(person => 
     <div key={person.id}>
         {person.name} {person.number}
-        <button onClick={deleteClicked(person.id)}>delete</button>
+        <button onClick={() => deleteClicked(person.id, person.name)}>delete</button>
     </div>)
     )
 }
