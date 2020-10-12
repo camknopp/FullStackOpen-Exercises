@@ -2,18 +2,15 @@ import React from 'react'
 import axios from 'axios'
   
 const DisplayFilteredItems = ({countries, filter, setNewFilter}) => {
-    let n = []
-    var weather
+    let n = [] 
 
+    // get weather for specified country/capital from weatherstack api
     const getWeather = (query) => {
         return axios.get(query)
-        .then(response => {
-        console.log(response.data.current)
-        weather = response.data.current
-       // return response.data.current.temperature
-        })
+        .then(response => response.data.current)
     }
 
+    // only show countries that match the chosen filter
     for (let i = 0; i < countries.length; i++) {
     if ((countries[i].name.toLowerCase())
         .includes(filter.toLowerCase())) {
@@ -28,6 +25,7 @@ const DisplayFilteredItems = ({countries, filter, setNewFilter}) => {
             </div>
         )
     } else if (n.length > 1) {
+        // display the list of countries if there are less than 10 but more than 1
         return (
             n.map(country => <div key={country.name}>
                 
@@ -37,15 +35,16 @@ const DisplayFilteredItems = ({countries, filter, setNewFilter}) => {
                 </div>)
             )
     } else if (n.length === 1) {
+        // if only one country remains, display its info
         let country = n[0]
         console.log(country)
         let capital = ""
         let query = ""
         let languages = country.languages
         let imageAltText = "flag of " + country.name
-        // let ACCESS_KEY = process.env.REACT_APP_API_KEY
-        let ACCESS_KEY = '2c3213f52cbfd44e6cac39475e85edd4'
+        let ACCESS_KEY = process.env.REACT_APP_API_KEY
 
+        // if the capital doesn't exist, then we request the weather for the country as a whole
         if (country.capital === '') {
             capital = 'DNE'
             query = "http://api.weatherstack.com/current?access_key=" 
@@ -55,11 +54,9 @@ const DisplayFilteredItems = ({countries, filter, setNewFilter}) => {
             query = "http://api.weatherstack.com/current?access_key=" 
             + ACCESS_KEY + "&query=" + country.capital + ", " + country.name
         }
-
-        //let weather = getWeather(query)
         getWeather(query)
-        console.log(weather)
-
+        
+        // display the country's information
         return (
             <div>
                 <h2>{country.name}</h2>
@@ -79,6 +76,7 @@ const DisplayFilteredItems = ({countries, filter, setNewFilter}) => {
             </div>
         )
     } else {
+        // if no countries match the specified filte
         return (
             <div>No matching countries, specify another filter</div>
         )
