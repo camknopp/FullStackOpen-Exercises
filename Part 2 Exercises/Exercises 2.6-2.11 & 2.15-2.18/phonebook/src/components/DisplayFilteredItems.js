@@ -10,15 +10,11 @@ const DisplayFilteredItems = ({persons, setPersons, filter}) => {
     // deletes the corresponding entry in the database
     const deleteClicked = (id, name) => {
         if(window.confirm(`Delete ${name}?`)) {
-            console.log("button pressed for ", id)
-
             personService.remove(id)
             .then(response => {
-                console.log("removing ", id)
                 personService.getAll()
                 .then(response => {
                     setPersons(response.data)
-                    console.log("persons:", persons)
                 })
             })
         } else {
