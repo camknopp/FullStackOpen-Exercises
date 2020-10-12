@@ -1,7 +1,6 @@
 import React from "react"
 import axios from "axios"
 
-    }
 const DisplayFilteredItems = ({ countries, filter, setNewFilter }) => {
     let n = []
 
