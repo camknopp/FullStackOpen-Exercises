@@ -12,6 +12,9 @@ morgan.token('showRequest', (request, response) => {
 
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :showRequest'))
 
+const cors = require('cors')
+app.use(cors())
+
 let entries = [
 	{
 		id: 1,
