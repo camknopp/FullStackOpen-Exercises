@@ -41,8 +41,15 @@ app.get('/api/entries/:id', (request, response) => {
     if (entry) {
         response.json(entry)
     } else {
-        response.status(404).end()
+        response.status(204).end()
     }
+})
+
+app.delete('/api/entries/:id', (request, response) => {
+    const id = Number(request.params.id)
+    entries = entries.filter(entry => entry.id !== id)
+
+    response.status(204).end()
 })
 
 const PORT = 3001
