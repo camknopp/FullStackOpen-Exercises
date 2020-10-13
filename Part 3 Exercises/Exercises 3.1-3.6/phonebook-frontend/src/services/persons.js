@@ -1,7 +1,7 @@
 //import React from 'react'
 import axios from "axios"
 
-const baseurl = "http://localhost:3001/api/entries"
+const baseurl = "/api/entries"
 
 const getAll = () => {
     // return all of the phonebook entries
