@@ -1,10 +1,10 @@
-# POST http://localhost:3001/api/entries
-# Content-Type: application/json
+POST http://localhost:3001/api/entries
+Content-Type: application/json
 
-# {
-#     "name" : "Tim Apples",
-#     "number" : "134134134"
-# }
+{
+    "name" : "John Cook",
+    "number" : "132524431"
+}
 
 
-GET http://localhost:3001/api/entries
+# GET http://localhost:3001/api/entries
