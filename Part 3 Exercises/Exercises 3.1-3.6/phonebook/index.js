@@ -1,5 +1,3 @@
-
-
 const express = require('express')
 const app = express()
 
@@ -28,6 +26,12 @@ let entries = [
 
 app.get('/api/entries', (request, response) => {
     response.json(entries)
+})
+
+app.get('/info', (request, response) => {
+    const date = new Date()
+    const msg = `Phonebook has info for ${entries.length} people <br/></br>${date}`
+    response.send(msg)
 })
 
 const PORT = 3001
