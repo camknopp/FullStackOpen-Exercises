@@ -56,8 +56,23 @@ app.delete("/api/entries/:id", (request, response) => {
 app.post("/api/entries", (request, response) => {
 	const id = Math.floor(Math.random() * 1000)
 	const entry = request.body
-    entry.id = id
-    entries = entries.concat(entry)
+	if (!entry.name) {
+		return response.status(400).json({
+			error: "name missing"
+		})
+	} else if (!entry.number) {
+		return response.status(400).json({
+			error: "number missing"
+		})
+    } else if (entries.find(e => e.name === entry.name)) {
+        return response.status(400).json({
+            error: "name already exists in phonebook"
+        })
+    }
+    
+
+	entry.id = id
+	entries = entries.concat(entry)
 	response.json(entry)
 })
 
