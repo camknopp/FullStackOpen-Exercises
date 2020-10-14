@@ -1,46 +1,33 @@
+require("dotenv").config()
 const express = require("express")
 const app = express()
-app.use(express.static('build'))
+app.use(express.static("build"))
 app.use(express.json())
+const Entry = require("./models/entry")
 
-var morgan = require('morgan')
-morgan.token('showRequest', (request, response) => {
-    name = request.body.name
-    number = request.body.number
-    
-    return JSON.stringify({name: name, number: number})
+var morgan = require("morgan")
+morgan.token("showRequest", (request, response) => {
+	name = request.body.name
+	number = request.body.number
+
+	return JSON.stringify({ name: name, number: number })
 })
 
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :showRequest'))
+app.use(
+	morgan(
+		":method :url :status :res[content-length] - :response-time ms :showRequest"
+	)
+)
 
-const cors = require('cors')
+const cors = require("cors")
 app.use(cors())
 
-let entries = [
-	{
-		id: 1,
-		name: "Arto Hellas",
-		number: "14235245"
-	},
-	{
-		id: 2,
-		name: "Ada Lovelace",
-		number: "23423423243"
-	},
-	{
-		id: 3,
-		name: "Dan Abramov",
-		number: "4524523"
-	},
-	{
-		id: 4,
-		name: "Mary Poppendick",
-		number: "13423413414"
-	}
-]
+let entries = []
 
 app.get("/api/entries", (request, response) => {
-	response.json(entries)
+	Entry.find({}).then(entries => {
+		response.json(entries)
+	})
 })
 
 app.get("/info", (request, response) => {
@@ -78,12 +65,11 @@ app.post("/api/entries", (request, response) => {
 		return response.status(400).json({
 			error: "number missing"
 		})
-    } else if (entries.find(e => e.name === entry.name)) {
-        return response.status(400).json({
-            error: "name already exists in phonebook"
-        })
-    }
-    
+	} else if (entries.find(e => e.name === entry.name)) {
+		return response.status(400).json({
+			error: "name already exists in phonebook"
+		})
+	}
 
 	entry.id = id
 	entries = entries.concat(entry)
