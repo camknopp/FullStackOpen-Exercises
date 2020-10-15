@@ -19,7 +19,6 @@ app.use(
 	)
 )
 
-
 const cors = require("cors")
 app.use(cors())
 
@@ -33,8 +32,6 @@ const errorHandler = (error, request, response, next) => {
 	next(error)
 }
 
-//app.use(errorHandler)
-
 app.get("/api/entries", (request, response) => {
 	Entry.find({}).then(entries => {
 		response.json(entries)
@@ -42,9 +39,11 @@ app.get("/api/entries", (request, response) => {
 })
 
 app.get("/info", (request, response) => {
-	const date = new Date()
-	const msg = `Phonebook has info for ${entries.length} people <br/></br>${date}`
-	response.send(msg)
+	Entry.find({}).then(entries => {
+		const date = new Date()
+		const msg = `Phonebook has info for ${entries.length} people <br/></br>${date}`
+		response.send(msg)
+	})
 })
 
 app.get("/api/entries/:id", (request, response, next) => {
@@ -70,11 +69,11 @@ app.put("/api/entries/:id", (request, response, next) => {
 		number: body.number
 	}
 
-	Entry.findByIdAndUpdate(request.params.id, entry, {new: true})
-	.then(updatedEntry => {
-		response.json(updatedEntry)
-	})
-	.catch(error => next(error))
+	Entry.findByIdAndUpdate(request.params.id, entry, { new: true })
+		.then(updatedEntry => {
+			response.json(updatedEntry)
+		})
+		.catch(error => next(error))
 })
 
 app.use(errorHandler)

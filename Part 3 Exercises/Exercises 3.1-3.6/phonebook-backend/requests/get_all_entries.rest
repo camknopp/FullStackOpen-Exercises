@@ -7,7 +7,7 @@
 # }
 
 
-# GET http://localhost:3001/api/entries
+GET http://localhost:3001/info
 
 # DELETE http://localhost:3001/api/entries/34543534
 
