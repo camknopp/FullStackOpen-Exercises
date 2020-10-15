@@ -25,10 +25,17 @@ app.use(cors())
 const errorHandler = (error, request, response, next) => {
 	// handles incorrect id
 
-	console.log(error.message)
+	//console.log(error.message)
+	console.log(error.name)
 
-	if (error.name == "CastError") {
-		return response.status(400).send({ error: "malformatted id" })
+	if (error.name === "CastError") {
+		return response.status(400).send({ error: "Malformatted id" })
+	} else if (error.name === "ValidationError") {
+		return response
+			.status(400)
+			.json({ error: error.message, type: "validation" })
+	} else if (error.name === "MongoError") {
+		return response.status(400).json({ error: "Name already exists" })
 	}
 
 	next(error)
@@ -93,52 +100,18 @@ app.post("/api/entries", (request, response, next) => {
 
 	const body = request.body
 
-	if (body.name === undefined) {
-		return response.status(400).json({ error: "name missing" })
-	} else if (body.number === undefined) {
-		return response.status(400).json({ error: "number missing" })
-	}
-
-	// Entry.find({}).then(entries => {
-	// 	// check whether name already exists in phonebook
-	// 	// if so, then update the existing entry with the new number
-
-	// 	entries.forEach(entry => {
-	// 		console.log("inside forEach")
-	// 		console.log("entry", entry.name)
-	// 		console.log("typeof entry ", typeof entry.name)
-	// 		console.log("body", body)
-	// 		console.log("typeof body ", typeof body)
-
-	// 		if (entry.name === body.name) {
-	// 			console.log(`${entry.name} matches ${body.name}`)
-	// 			let newEntry = {
-	// 				name: body.name,
-	// 				number: body.number
-	// 			}
-
-	// 			Entry.findByIdAndUpdate(entry._id.toString(), newEntry, { new: true })
-	// 				.then(updatedEntry => {
-	// 					console.log("inside findbyIdAndUpdate")
-	// 					return response.json(updatedEntry)
-	// 					//return
-	// 					console.log("created json response")
-	// 				})
-	// 				.catch(error => next(error))
-	// 		}
-	// 	})
-	// 	console.log("outside forEach")
-	// })
-	
 	const entry = new Entry({
 		name: body.name,
 		number: body.number
 	})
 
-	entry.save().then(savedEntry => {
-		response.json(entry)
-	})
-	console.log("saved new entry")
+	entry
+		.save()
+		.then(savedEntry => {
+			console.log("saved new entry")
+			response.json(entry)
+		})
+		.catch(error => next(error))
 })
 
 app.use(errorHandler)

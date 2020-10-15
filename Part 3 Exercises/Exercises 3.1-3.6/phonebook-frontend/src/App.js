@@ -71,28 +71,45 @@ const App = () => {
 						})
 					})
 					.catch(error => {
-						setErrorMessage(
-							`Information of ${newName} has already been removed from the server`
-						)
-						setTimeout(() => {
-							setErrorMessage(null)
-						}, 5000)
-						personService.getAll().then(response => {
-							setPersons(response.data)
-						})
+						if (error.message.data.type === "validation") {
+							let msg = error.response.data.error
+							setErrorMessage(msg)
+							setTimeout(() => {
+								setErrorMessage(null)
+							}, 5000)
+						} else {
+							setErrorMessage(
+								`Information of ${newName} has already been removed from the server`
+							)
+							setTimeout(() => {
+								setErrorMessage(null)
+							}, 5000)
+							personService.getAll().then(response => {
+								setPersons(response.data)
+							})
+						}
 					})
 			}
 		} else {
 			// name does not already exist in phonebook, so create new entry
-			personService.create(personObject).then(response => {
-				personService.getAll().then(r => {
-					setMessage(`Added ${newName}`)
-					setTimeout(() => {
-						setMessage(null)
-					}, 5000)
-					setPersons(r.data)
+			personService
+				.create(personObject)
+				.then(response => {
+					personService.getAll().then(r => {
+						setMessage(`Added ${newName}`)
+						setTimeout(() => {
+							setMessage(null)
+						}, 5000)
+						setPersons(r.data)
+					})
 				})
-			})
+				.catch(error => {
+					let msg = error.response.data.error
+					setErrorMessage(msg)
+					setTimeout(() => {
+						setErrorMessage(null)
+					}, 5000)
+				})
 		}
 	}
 
