@@ -48,10 +48,12 @@ app.get("/api/entries/:id", (request, response) => {
 })
 
 app.delete("/api/entries/:id", (request, response) => {
-	const id = Number(request.params.id)
-	entries = entries.filter(entry => entry.id !== id)
-
-	response.status(204).end()
+	// const id = Number(request.params.id)
+	// entries = entries.filter(entry => entry.id !== id)
+	Entry.findByIdAndRemove(request.params.id)
+	.then(result => {
+		response.status(204).end()
+	})
 })
 
 app.post("/api/entries", (request, response) => {
