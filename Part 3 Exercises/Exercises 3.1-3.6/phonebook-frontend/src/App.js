@@ -11,8 +11,8 @@ const App = () => {
 	const [newName, setNewName] = useState("")
 	const [newNumber, setNewNumber] = useState("")
 	const [newFilter, setNewFilter] = useState("")
-  const [message, setMessage] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
+	const [message, setMessage] = useState(null)
+	const [errorMessage, setErrorMessage] = useState(null)
 
 	useEffect(() => {
 		personService.getAll().then(response => {
@@ -59,25 +59,28 @@ const App = () => {
 			if (window.confirm(msg)) {
 				// update the old entry with the new number
 				let personID = findPersonID(newName)
-				personService.update(personObject, personID).then(response => {
-					personService.getAll().then(r => {
-						setMessage(`Changed ${newName}'s number`)
-						setTimeout(() => {
-							setMessage(null)
-						}, 5000)
-						setPersons(r.data)
+				personService
+					.update(personObject, personID)
+					.then(response => {
+						personService.getAll().then(r => {
+							setMessage(`Changed ${newName}'s number`)
+							setTimeout(() => {
+								setMessage(null)
+							}, 5000)
+							setPersons(r.data)
+						})
 					})
-        })
-        .catch(error => {
-          setErrorMessage(`Information of ${newName} has already been removed from the server`)
-          setTimeout(() => {
-            setErrorMessage(null)
-          }, 5000)
-          personService.getAll().then(response => {
-            setPersons(response.data)
-          })
-
-        })
+					.catch(error => {
+						setErrorMessage(
+							`Information of ${newName} has already been removed from the server`
+						)
+						setTimeout(() => {
+							setErrorMessage(null)
+						}, 5000)
+						personService.getAll().then(response => {
+							setPersons(response.data)
+						})
+					})
 			}
 		} else {
 			// name does not already exist in phonebook, so create new entry
@@ -97,7 +100,7 @@ const App = () => {
 		<div>
 			<h2>Phonebook</h2>
 			<Notification message={message} />
-      <ErrorMessage message={errorMessage} />
+			<ErrorMessage message={errorMessage} />
 
 			<FilterBox
 				filterValue={newFilter}

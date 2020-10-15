@@ -2,9 +2,23 @@
 # Content-Type: application/json
 
 # {
-#     "name" : "John Cook",
-#     "number" : "132524431"
+#     "name" : "Timmy Johnson",
+#     "number" : "23423"
 # }
 
 
-GET http://localhost:3001/api/entries
+# GET http://localhost:3001/api/entries
+
+# DELETE http://localhost:3001/api/entries/34543534
+
+# DELETE http://localhost:3001/api/entries/34543534
+ 
+#  GET http://localhost:3001/api/entries/31423423
+
+# PUT http://localhost:3001/api/entries/13423423
+# Content-Type: application/json
+
+# {
+#     "name" : "Timmy Johnson",
+#     "number" : "23423"
+# }

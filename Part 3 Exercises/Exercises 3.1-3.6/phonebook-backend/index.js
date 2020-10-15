@@ -5,7 +5,7 @@ app.use(express.static("build"))
 app.use(express.json())
 const Entry = require("./models/entry")
 
-var morgan = require("morgan")
+const morgan = require("morgan")
 morgan.token("showRequest", (request, response) => {
 	name = request.body.name
 	number = request.body.number
@@ -19,10 +19,21 @@ app.use(
 	)
 )
 
+
 const cors = require("cors")
 app.use(cors())
 
-let entries = []
+const errorHandler = (error, request, response, next) => {
+	console.log(error.message)
+
+	if (error.name == "CastError") {
+		return response.status(400).send({ error: "malformatted id" })
+	}
+
+	next(error)
+}
+
+//app.use(errorHandler)
 
 app.get("/api/entries", (request, response) => {
 	Entry.find({}).then(entries => {
@@ -36,54 +47,52 @@ app.get("/info", (request, response) => {
 	response.send(msg)
 })
 
-app.get("/api/entries/:id", (request, response) => {
-	const id = Number(request.params.id)
-	const entry = entries.find(entry => entry.id === id)
-
-	if (entry) {
-		response.json(entry)
-	} else {
-		response.status(204).end()
-	}
+app.get("/api/entries/:id", (request, response, next) => {
+	Entry.findById(request.params.id)
+		.then(result => {
+			response.json(result)
+		})
+		.catch(error => next(error))
 })
 
-app.delete("/api/entries/:id", (request, response) => {
-	// const id = Number(request.params.id)
-	// entries = entries.filter(entry => entry.id !== id)
+app.delete("/api/entries/:id", (request, response, next) => {
 	Entry.findByIdAndRemove(request.params.id)
-	.then(result => {
-		response.status(204).end()
-	})
+		.then(result => {
+			response.status(204).end()
+		})
+		.catch(error => next(error))
 })
+
+app.put("/api/entries/:id", (request, response, next) => {
+	body = request.body
+	const entry = {
+		name: body.name,
+		number: body.number
+	}
+
+	Entry.findByIdAndUpdate(request.params.id, entry, {new: true})
+	.then(updatedEntry => {
+		response.json(updatedEntry)
+	})
+	.catch(error => next(error))
+})
+
+app.use(errorHandler)
 
 app.post("/api/entries", (request, response) => {
-	// const id = Math.floor(Math.random() * 1000)
 	const body = request.body
+
 	if (body.name === undefined) {
-		return response.status(400).json({ error: 'name missing'})
+		return response.status(400).json({ error: "name missing" })
 	} else if (body.number === undefined) {
-		return response.status(400).json({ error: 'number missing'})
+		return response.status(400).json({ error: "number missing" })
 	}
 
 	const entry = new Entry({
 		name: body.name,
 		number: body.number
 	})
-	// if (!entry.name) {
-	// 	return response.status(400).json({
-	// 		error: "name missing"
-	// 	})
-	// } else if (!entry.number) {
-	// 	return response.status(400).json({
-	// 		error: "number missing"
-	// 	})
-	// } else if (entries.find(e => e.name === entry.name)) {
-	// 	return response.status(400).json({
-	// 		error: "name already exists in phonebook"
-	// 	})
-	// }
-	// entry.id = id
-	// entries = entries.concat(entry)
+
 	entry.save().then(savedEntry => {
 		response.json(entry)
 	})
