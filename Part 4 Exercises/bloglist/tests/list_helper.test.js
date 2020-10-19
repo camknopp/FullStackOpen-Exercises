@@ -217,7 +217,7 @@ describe("most blogs", () => {
     })
 
     test("large blog list returns correct values", () => {
-        expect(listHelper.mostBlogs([blogs])).toEqual({
+        expect(listHelper.mostBlogs(blogs)).toEqual({
             author: "Robert C. Martin",
             blogs: 3
         })
