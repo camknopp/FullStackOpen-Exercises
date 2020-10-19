@@ -11,6 +11,17 @@ const nameCount = (array, name) => {
 	return count
 }
 
+const likesCount = (array, name) => {
+	let count = 0
+	for (let i = 0; i < array.length; i++) {
+		if (array[i].author === name) {
+            logger.info(`adding ${array[i].likes} to ${array[i].author}'s count`)
+			count += array[i].likes
+		}
+	}
+	return count
+}
+
 const dummy = blogs => {
 	return 1
 }
@@ -39,11 +50,10 @@ const favoriteBlog = blogs => {
 const mostBlogs = blogs => {
 	let seen = []
 	maxBlogs = 0
-    returnAuthor = null
+	returnAuthor = null
 
 	// check number of occurrences of each author
 	for (let i = 0; i < blogs.length; i++) {
-
 		if (seen.includes(blogs[i].author) === false) {
 			// if the author's name has not been passed already
 			occurrences = nameCount(blogs, blogs[i].author) // get number of occurrences of that author's name in the blog list
@@ -60,9 +70,33 @@ const mostBlogs = blogs => {
 	return returnAuthor
 }
 
+const mostLikes = blogs => {
+	let seen = []
+	maxLikes = 0
+	returnAuthor = null
+
+	// check number of occurrences of each author
+	for (let i = 0; i < blogs.length; i++) {
+		if (seen.includes(blogs[i].author) === false) {
+			// if the author's name has not been passed already
+			likes = likesCount(blogs, blogs[i].author) // get number of occurrences of that author's name in the blog list
+			if (likes > maxLikes) {
+				maxLikes = likes
+				returnAuthor = {
+					author: blogs[i].author,
+					likes: likes
+				}
+				seen.push(blogs[i].author)
+			}
+		}
+	}
+	return returnAuthor
+}
+
 module.exports = {
 	dummy,
 	totalLikes,
 	favoriteBlog,
-	mostBlogs
+    mostBlogs,
+    mostLikes
 }
