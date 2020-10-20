@@ -59,27 +59,36 @@ const initialBlogs = [
 	}
 ]
 
-beforeEach(async () => {
-	await Blog.deleteMany({})
+describe("blogs api tests", async () => {
+	beforeEach(async () => {
+		await Blog.deleteMany({})
 
-	for (var blog of initialBlogs) {
-		logger.info("adding blog object")
-		let blogObject = new Blog(blog)
-		await blogObject.save()
-		logger.info("added blog object")
-	}
-	logger.info("finished adding all blog objects")
-})
+		for (var blog of initialBlogs) {
+			logger.info("adding blog object")
+			let blogObject = new Blog(blog)
+			await blogObject.save()
+			logger.info("added blog object")
+		}
+		logger.info("finished adding all blog objects")
+	})
 
-test("returns correct amount of blog posts in JSON format", async () => {
-	const response = await api
-		.get("/api/blogs")
-		.expect(200)
-		.expect("Content-Type", /application\/json/)
+	test("returns correct amount of blog posts in JSON format", async () => {
+		const response = await api
+			.get("/api/blogs")
+			.expect(200)
+			.expect("Content-Type", /application\/json/)
 
-	expect(response.body).toHaveLength(6)
-})
+		expect(response.body).toHaveLength(6)
+	})
 
-afterAll(() => {
-	mongoose.connection.close()
+	test("id property has name 'id' rather than '_id'", async () => {
+		const response = await api.get("/api/blogs")
+
+		expect(response.body[1].id).toBeDefined()
+		expect(response.body[1]._id).toBe(undefined)
+	})
+
+	afterAll(() => {
+		mongoose.connection.close()
+	})
 })
