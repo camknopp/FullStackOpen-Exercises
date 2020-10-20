@@ -116,11 +116,40 @@ describe("blogs api tests", () => {
 
 	test("missing url and/or title results in status code 400", async () => {
 		const blogEntry = {
-			author: "Tim Timerson",
+			author: "Tim Timerson"
 		}
 
+		await api
+			.post("/api/blogs")
+			.send(blogEntry)
+			.expect(400)
+	})
 
-		await api.post('/api/blogs').send(blogEntry).expect(400)
+	test("deleting a specific id works correctly", async () => {
+		let response = await api.get("/api/blogs")
+		expect(response.body).toHaveLength(6)
+
+		await api.delete("/api/blogs/5a422a851b54a676234d17f7").expect(204)
+
+		response = await api.get("/api/blogs")
+		expect(response.body).toHaveLength(5)
+	})
+
+	test("updating specific id works correctly", async () => {
+		const blogEntry = {
+			title: "The cool blog",
+			author: "Tim Timerson",
+			url: "google.com",
+			likes: 5
+		}
+
+		await api.put("/api/blogs/5a422a851b54a676234d17f7").send(blogEntry)
+
+		let response = await api.get("/api/blogs")
+		expect(response.body[0].author).toBe("Tim Timerson")
+		expect(response.body[0].title).toBe("The cool blog")
+		expect(response.body[0].url).toBe("google.com")
+		expect(response.body[0].likes).toBe(5)
 	})
 
 	afterAll(() => {
