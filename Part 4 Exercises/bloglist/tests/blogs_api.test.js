@@ -59,17 +59,14 @@ const initialBlogs = [
 	}
 ]
 
-describe("blogs api tests", async () => {
+describe("blogs api tests", () => {
 	beforeEach(async () => {
 		await Blog.deleteMany({})
 
 		for (var blog of initialBlogs) {
-			logger.info("adding blog object")
 			let blogObject = new Blog(blog)
 			await blogObject.save()
-			logger.info("added blog object")
 		}
-		logger.info("finished adding all blog objects")
 	})
 
 	test("returns correct amount of blog posts in JSON format", async () => {
@@ -86,6 +83,20 @@ describe("blogs api tests", async () => {
 
 		expect(response.body[1].id).toBeDefined()
 		expect(response.body[1]._id).toBe(undefined)
+	})
+
+	test("POST creates new blog post", async () => {
+		const blogEntry = {
+			author: "Tim Timerson",
+			title: "The cool blog",
+			likes: 5000
+		}
+
+		let blogObject = new Blog(blogEntry)
+		await blogObject.save()
+
+		response = await api.get("/api/blogs")
+		expect(response.body).toHaveLength(7)
 	})
 
 	afterAll(() => {
