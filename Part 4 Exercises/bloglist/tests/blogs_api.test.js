@@ -99,6 +99,19 @@ describe("blogs api tests", () => {
 		expect(response.body).toHaveLength(7)
 	})
 
+	test("likes property defaults to 0", async () => {
+		const blogEntry = {
+			author: "Tim Timerson",
+			title: "The cool blog",
+		}
+
+		let blogObject = new Blog(blogEntry)
+		await blogObject.save()
+
+		response = await api.get('/api/blogs')
+		expect(response.body[6].likes).toBe(0)
+	})
+
 	afterAll(() => {
 		mongoose.connection.close()
 	})
