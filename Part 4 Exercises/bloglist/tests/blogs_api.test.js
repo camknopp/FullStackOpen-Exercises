@@ -89,6 +89,7 @@ describe("blogs api tests", () => {
 		const blogEntry = {
 			author: "Tim Timerson",
 			title: "The cool blog",
+			url: "google.com",
 			likes: 5000
 		}
 
@@ -103,13 +104,23 @@ describe("blogs api tests", () => {
 		const blogEntry = {
 			author: "Tim Timerson",
 			title: "The cool blog",
+			url: "google.com"
 		}
 
 		let blogObject = new Blog(blogEntry)
 		await blogObject.save()
 
-		response = await api.get('/api/blogs')
+		const response = await api.get("/api/blogs")
 		expect(response.body[6].likes).toBe(0)
+	})
+
+	test("missing url and/or title results in status code 400", async () => {
+		const blogEntry = {
+			author: "Tim Timerson",
+		}
+
+
+		await api.post('/api/blogs').send(blogEntry).expect(400)
 	})
 
 	afterAll(() => {
