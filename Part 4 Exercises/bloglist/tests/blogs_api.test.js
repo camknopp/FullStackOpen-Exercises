@@ -73,7 +73,7 @@ beforeEach(async () => {
 
 test("returns correct amount of blog posts in JSON format", async () => {
 	const response = await api
-		.get("/api/notes")
+		.get("/api/blogs")
 		.expect(200)
 		.expect("Content-Type", /application\/json/)
 
