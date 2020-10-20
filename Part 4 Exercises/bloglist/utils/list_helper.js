@@ -15,7 +15,6 @@ const likesCount = (array, name) => {
 	let count = 0
 	for (let i = 0; i < array.length; i++) {
 		if (array[i].author === name) {
-            logger.info(`adding ${array[i].likes} to ${array[i].author}'s count`)
 			count += array[i].likes
 		}
 	}
