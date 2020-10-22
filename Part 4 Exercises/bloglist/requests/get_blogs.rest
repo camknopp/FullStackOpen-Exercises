@@ -10,13 +10,13 @@
 
 # GET http://localhost:3003/api/blogs
 
-GET http://localhost:3003/api/users
+# GET http://localhost:3003/api/users
 
-# POST http://localhost:3003/api/users
-# Content-Type: application/json
+POST http://localhost:3003/api/users
+Content-Type: application/json
 
-# {
-#     "name": "Tim Timerson",
-#     "username": "timtimerkemrek",
-#     "password": "lasjdfljlsd103413"
-# }
+{
+    "name": "Tlkasjfalsdjf",
+    "username": "tiasdlfjasldjf",
+    "password": "l"
+}
