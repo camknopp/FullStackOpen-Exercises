@@ -2,21 +2,21 @@
 # Content-Type: application/json
 
 # {
-#     "title": "The Alright blog",
-# 	"author": "Tim Timmerson",
+#     "title": "Vice",
+# 	"author": "Ron Jeremy",
 # 	"url": "http://www.google.com",
-# 	"likes": 1
+# 	"likes": 13413414134
 # }
 
-# GET http://localhost:3003/api/blogs
+GET http://localhost:3003/api/blogs
 
 # GET http://localhost:3003/api/users
 
-POST http://localhost:3003/api/users
-Content-Type: application/json
+# POST http://localhost:3003/api/users
+# Content-Type: application/json
 
-{
-    "name": "Tlkasjfalsdjf",
-    "username": "tiasdlfjasldjf",
-    "password": "l"
-}
+# {
+#     "name": "Tlkasjfalsdjf",
+#     "username": "tiasdlfjasldjf",
+#     "password": "l"
+# }
