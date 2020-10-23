@@ -3,6 +3,11 @@ const Blog = require("../models/blog")
 const User = require("../models/user")
 const jwt = require("jsonwebtoken")
 
+blogsRouter.get("/", async (request, response) => {
+	const blogs = await Blog.find({}).populate("user", { blogs: 0 })
+	response.json(blogs)
+})
+
 blogsRouter.post("/", async (request, response) => {
 	const body = request.body
 
@@ -30,6 +35,23 @@ blogsRouter.post("/", async (request, response) => {
 })
 
 blogsRouter.delete("/:id", async (request, response) => {
+	blog = await Blog.findById(request.params.id)
+	console.log(blog)
+
+	// get the decoded token from the token header
+	const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+	if (!request.token || !decodedToken.id) {
+		return response.status(401).json({ error: "token missing or invalid" })
+	}
+
+	// make sure that the authorization token belongs to the blog's creator
+	if (decodedToken.id != blog.user[0].toString()) {
+		return response
+			.status(400)
+			.json({ error: "User not authorized to delete this blog entry" })
+	}
+
 	await Blog.findByIdAndRemove(request.params.id)
 	response.status(204).end()
 })
