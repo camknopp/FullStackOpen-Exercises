@@ -2,10 +2,10 @@
 # Content-Type: application/json
 
 # {
-#     "title": "Vice",
-# 	"author": "Ron Jeremy",
+#     "title": "Oprah",
+# 	"author": "Oprah Winfrey",
 # 	"url": "http://www.google.com",
-# 	"likes": 13413414134
+# 	"likes": 1341341
 # }
 
 # GET http://localhost:3003/api/blogs
