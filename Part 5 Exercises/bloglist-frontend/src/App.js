@@ -17,7 +17,7 @@ const App = () => {
 
 	useEffect(() => {
 		blogService.getAll().then(blogs => setBlogs(blogs))
-	} )
+	}, [])
 
 	useEffect(() => {
 		const loggedUser = window.localStorage.getItem("loggedInUser")
@@ -56,14 +56,12 @@ const App = () => {
 			setUsername("")
 			setPassword("")
 		}
-
 	}
 
 	const handleLogout = event => {
 		window.localStorage.clear()
 		setUser(null)
 	}
-
 
 	const showWhenFormVisible = { display: showBlogForm ? "" : "none" }
 	const hideWhenFormVisible = { display: showBlogForm ? "none" : "" }
@@ -111,8 +109,11 @@ const App = () => {
 			<h2>create new</h2>
 
 			<div style={showWhenFormVisible}>
-
-        <CreateForm  setErrorMessage={setErrorMessage} setNotificationMessage={setNotificationMessage}/>
+				<CreateForm
+					setErrorMessage={setErrorMessage}
+          setNotificationMessage={setNotificationMessage}
+          setBlogs={setBlogs}
+				/>
 				<button
 					onClick={() => {
 						setShowBlogForm(!showBlogForm)

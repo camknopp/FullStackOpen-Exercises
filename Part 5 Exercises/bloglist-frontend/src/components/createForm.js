@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import blogService from "../services/blogs"
 
-const CreateForm = ({ setNotificationMessage, setErrorMessage }) => {
+const CreateForm = ({ setNotificationMessage, setErrorMessage, setBlogs }) => {
 	const [title, setTitle] = useState("")
 	const [author, setAuthor] = useState("")
 	const [url, setUrl] = useState("")
@@ -20,7 +20,8 @@ const CreateForm = ({ setNotificationMessage, setErrorMessage }) => {
 
 		try {
 			await blogService.create(newBlog, token)
-			setNotificationMessage(`added new blog, ${newBlog.title}`)
+            setNotificationMessage(`added new blog, ${newBlog.title}`)
+            blogService.getAll().then(blogs => setBlogs(blogs))
 		} catch {
 			setErrorMessage("error creating new blog")
 			setTimeout(() => {
