@@ -11,16 +11,13 @@ const App = () => {
 	const [username, setUsername] = useState("")
 	const [password, setPassword] = useState("")
 	const [user, setUser] = useState(null)
-	const [title, setTitle] = useState("")
-	const [author, setAuthor] = useState("")
-	const [url, setUrl] = useState("")
 	const [notificationMessage, setNotificationMessage] = useState(null)
 	const [errorMessage, setErrorMessage] = useState(null)
 	const [showBlogForm, setShowBlogForm] = useState(false)
 
 	useEffect(() => {
 		blogService.getAll().then(blogs => setBlogs(blogs))
-	}, [])
+	} )
 
 	useEffect(() => {
 		const loggedUser = window.localStorage.getItem("loggedInUser")
@@ -48,12 +45,10 @@ const App = () => {
 				setNotificationMessage(null)
 			}, 5000)
 
-			//blogService.setToken(user.token)
 			setUser(user)
 			setUsername("")
 			setPassword("")
 		} catch {
-			// setErrorMessage()
 			setErrorMessage("invalid credentials")
 			setTimeout(() => {
 				setErrorMessage(null)
@@ -62,41 +57,13 @@ const App = () => {
 			setPassword("")
 		}
 
-		// console.log("logging in with", username, password)
 	}
 
 	const handleLogout = event => {
-		// window.localStorage.removeItem("loggedInUser")
 		window.localStorage.clear()
 		setUser(null)
 	}
 
-	const handleCreate = async event => {
-		// need to create a new note
-		event.preventDefault()
-		const loggedUser = window.localStorage.getItem("loggedInUser")
-		const user = JSON.parse(loggedUser)
-		const token = user.token
-
-		const newBlog = {
-			title,
-			author,
-			url
-		}
-
-		try {
-			await blogService.create(newBlog, token)
-			setNotificationMessage(`added new blog, ${newBlog.title}`)
-		} catch {
-			setErrorMessage("error creating new blog")
-			setTimeout(() => {
-				setErrorMessage(null)
-			}, 5000)
-		}
-		setTitle("")
-		setAuthor("")
-		setUrl("")
-	}
 
 	const showWhenFormVisible = { display: showBlogForm ? "" : "none" }
 	const hideWhenFormVisible = { display: showBlogForm ? "none" : "" }
@@ -144,15 +111,8 @@ const App = () => {
 			<h2>create new</h2>
 
 			<div style={showWhenFormVisible}>
-				<CreateForm
-					handleCreate={handleCreate}
-					title={title}
-					setTitle={setTitle}
-					author={author}
-					setAuthor={setAuthor}
-					url={url}
-					setUrl={setUrl}
-				/>
+
+        <CreateForm  setErrorMessage={setErrorMessage} setNotificationMessage={setNotificationMessage}/>
 				<button
 					onClick={() => {
 						setShowBlogForm(!showBlogForm)

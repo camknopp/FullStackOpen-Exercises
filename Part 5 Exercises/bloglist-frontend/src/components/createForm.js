@@ -1,6 +1,37 @@
-import React from 'react'
+import React, { useState } from "react"
+import blogService from "../services/blogs"
 
-const CreateForm = ({ handleCreate, title, setTitle, author, setAuthor, url, setUrl }) => {
+const CreateForm = ({ setNotificationMessage, setErrorMessage }) => {
+	const [title, setTitle] = useState("")
+	const [author, setAuthor] = useState("")
+	const [url, setUrl] = useState("")
+
+	const handleCreate = async event => {
+		event.preventDefault()
+		const loggedUser = window.localStorage.getItem("loggedInUser")
+		const user = JSON.parse(loggedUser)
+		const token = user.token
+
+		const newBlog = {
+			title,
+			author,
+			url
+		}
+
+		try {
+			await blogService.create(newBlog, token)
+			setNotificationMessage(`added new blog, ${newBlog.title}`)
+		} catch {
+			setErrorMessage("error creating new blog")
+			setTimeout(() => {
+				setErrorMessage(null)
+			}, 5000)
+		}
+		setTitle("")
+		setAuthor("")
+		setUrl("")
+	}
+
 	return (
 		<form onSubmit={handleCreate}>
 			title:{" "}
