@@ -4,6 +4,7 @@ import blogService from "./services/blogs"
 import loginService from "./services/login"
 import ErrorMessage from "./components/errorMessage"
 import Notification from "./components/notification"
+import CreateForm from "./components/createForm"
 
 const App = () => {
 	const [blogs, setBlogs] = useState([])
@@ -15,6 +16,7 @@ const App = () => {
 	const [url, setUrl] = useState("")
 	const [notificationMessage, setNotificationMessage] = useState(null)
 	const [errorMessage, setErrorMessage] = useState(null)
+	const [showBlogForm, setShowBlogForm] = useState(false)
 
 	useEffect(() => {
 		blogService.getAll().then(blogs => setBlogs(blogs))
@@ -39,9 +41,9 @@ const App = () => {
 				password
 			})
 
-      window.localStorage.setItem("loggedInUser", JSON.stringify(user))
-      
-      setNotificationMessage(`Welcome back ${user.username}`)
+			window.localStorage.setItem("loggedInUser", JSON.stringify(user))
+
+			setNotificationMessage(`Welcome back ${user.username}`)
 			setTimeout(() => {
 				setNotificationMessage(null)
 			}, 5000)
@@ -57,10 +59,8 @@ const App = () => {
 				setErrorMessage(null)
 			}, 5000)
 			setUsername("")
-      setPassword("")
-    }
-    
-    
+			setPassword("")
+		}
 
 		// console.log("logging in with", username, password)
 	}
@@ -85,8 +85,8 @@ const App = () => {
 		}
 
 		try {
-      await blogService.create(newBlog, token)
-      setNotificationMessage(`added new blog, ${newBlog.title}`)
+			await blogService.create(newBlog, token)
+			setNotificationMessage(`added new blog, ${newBlog.title}`)
 		} catch {
 			setErrorMessage("error creating new blog")
 			setTimeout(() => {
@@ -95,16 +95,18 @@ const App = () => {
 		}
 		setTitle("")
 		setAuthor("")
-    setUrl("")
-    
+		setUrl("")
 	}
+
+	const showWhenFormVisible = { display: showBlogForm ? "" : "none" }
+	const hideWhenFormVisible = { display: showBlogForm ? "none" : "" }
 
 	if (user === null) {
 		return (
 			<div>
 				<h2>Log in to application</h2>
-        <Notification message={notificationMessage} />
-			<ErrorMessage message={errorMessage} />
+				<Notification message={notificationMessage} />
+				<ErrorMessage message={errorMessage} />
 				<form onSubmit={handleLogin}>
 					<div>
 						username
@@ -140,30 +142,35 @@ const App = () => {
 				</button>
 			</div>
 			<h2>create new</h2>
-			<form onSubmit={handleCreate}>
-				title:{" "}
-				<input
-					type="text"
-					value={title}
-					onChange={({ target }) => setTitle(target.value)}
-				></input>
-				<br></br>
-				author:
-				<input
-					type="text"
-					value={author}
-					onChange={({ target }) => setAuthor(target.value)}
-				></input>
-				<br></br>
-				url:
-				<input
-					type="text"
-					value={url}
-					onChange={({ target }) => setUrl(target.value)}
-				></input>
-				<br></br>
-				<button type="submit">create</button>
-			</form>
+
+			<div style={showWhenFormVisible}>
+				<CreateForm
+					handleCreate={handleCreate}
+					title={title}
+					setTitle={setTitle}
+					author={author}
+					setAuthor={setAuthor}
+					url={url}
+					setUrl={setUrl}
+				/>
+				<button
+					onClick={() => {
+						setShowBlogForm(!showBlogForm)
+					}}
+				>
+					cancel
+				</button>
+			</div>
+
+			<div style={hideWhenFormVisible}>
+				<button
+					onClick={() => {
+						setShowBlogForm(!showBlogForm)
+					}}
+				>
+					add new blog
+				</button>
+			</div>
 
 			<br></br>
 			{blogs.map(blog => (
