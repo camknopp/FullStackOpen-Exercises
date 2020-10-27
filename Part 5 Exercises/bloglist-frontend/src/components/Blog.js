@@ -8,17 +8,19 @@ const Blog = ({ blog }) => {
 		border: "solid",
 		borderWidth: 1,
 		marginBottom: 5
-  }
+	}
 
-  // increasing likes works, but does not rerender properly
+	// increasing likes works, but does not rerender properly
 
-  const [showAllInfo, setShowAllInfo] = useState(false)
-  const [likePresses, setLikePresses] = useState(0)
+	const [showAllInfo, setShowAllInfo] = useState(false)
+	//const [likePresses, setLikePresses] = useState(0)
+	const [thisBlog, setThisBlog] = useState(blog)
 
-  const likePressed = (blog) => {
-    blogService.increaseLikes(blog)
-    setLikePresses(likePresses+1)
-  }
+	const likePressed = async blog => {
+		const response = await blogService.increaseLikes(blog)
+	
+		setThisBlog(response)
+	}
 
 	const showWhenTrue = { display: showAllInfo ? "" : "none" }
 	const hideWhenTrue = { display: showAllInfo ? "none" : "" }
@@ -26,7 +28,7 @@ const Blog = ({ blog }) => {
 	return (
 		<div style={blogStyle}>
 			<div style={hideWhenTrue}>
-				{blog.title} {blog.author}
+				{thisBlog.title} {thisBlog.author}
 				<button
 					onClick={() => {
 						setShowAllInfo(true)
@@ -36,7 +38,7 @@ const Blog = ({ blog }) => {
 				</button>
 			</div>
 			<div style={showWhenTrue}>
-				{blog.title} {blog.author}
+				{thisBlog.title} {thisBlog.author}
 				<button
 					onClick={() => {
 						setShowAllInfo(false)
@@ -45,10 +47,10 @@ const Blog = ({ blog }) => {
 					hide
 				</button>
 				<br></br>
-				{blog.url}
+				{thisBlog.url}
 				<br></br>
-				likes {blog.likes}
-				<button onClick={() => likePressed(blog)}>like</button>
+				likes {thisBlog.likes}
+				<button onClick={() => likePressed(thisBlog)}>like</button>
 			</div>
 		</div>
 	)

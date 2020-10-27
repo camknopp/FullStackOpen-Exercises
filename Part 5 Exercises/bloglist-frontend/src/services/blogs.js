@@ -35,8 +35,8 @@ const increaseLikes = async (blog) => {
 		user: blog.user
 	}
 
-	await axios.put(idUrl, newBlog)
-
+	const response = await axios.put(idUrl, newBlog)
+	return response.data
 }
 
 export default { increaseLikes, getAll, create }
