@@ -16,7 +16,11 @@ const App = () => {
 	const [showBlogForm, setShowBlogForm] = useState(false)
 
 	useEffect(() => {
-		blogService.getAll().then(blogs => setBlogs(blogs))
+		blogService.getAll().then(blogs => {
+			blogs.sort((a, b) => (a.likes > b.likes) ? -1 : 1)
+			console.log(blogs)
+			setBlogs(blogs)
+		})
 	}, [])
 
 	useEffect(() => {
@@ -111,8 +115,8 @@ const App = () => {
 			<div style={showWhenFormVisible}>
 				<CreateForm
 					setErrorMessage={setErrorMessage}
-          setNotificationMessage={setNotificationMessage}
-          setBlogs={setBlogs}
+					setNotificationMessage={setNotificationMessage}
+					setBlogs={setBlogs}
 				/>
 				<button
 					onClick={() => {
