@@ -10,25 +10,37 @@ const Blog = ({ blog }) => {
 		marginBottom: 5
 	}
 
-	// increasing likes works, but does not rerender properly
 
 	const [showAllInfo, setShowAllInfo] = useState(false)
-	//const [likePresses, setLikePresses] = useState(0)
 	const [thisBlog, setThisBlog] = useState(blog)
 
 	const likePressed = async blog => {
 		const response = await blogService.increaseLikes(blog)
-	
+
 		setThisBlog(response)
+	}
+
+	const removePressed = async blog => {
+		const response = await blogService.remove(blog)
+
+		if (response.status === 204) {
+			setThisBlog(null)
+		} else {
+			console.log("unauthorized delete request")
+		}
 	}
 
 	const showWhenTrue = { display: showAllInfo ? "" : "none" }
 	const hideWhenTrue = { display: showAllInfo ? "none" : "" }
 
+	if (thisBlog === null) {
+		return <div></div>
+	}
+
 	return (
 		<div style={blogStyle}>
 			<div style={hideWhenTrue}>
-				{thisBlog.title} {thisBlog.author}
+				{thisBlog.title} 
 				<button
 					onClick={() => {
 						setShowAllInfo(true)
@@ -38,7 +50,9 @@ const Blog = ({ blog }) => {
 				</button>
 			</div>
 			<div style={showWhenTrue}>
-				{thisBlog.title} {thisBlog.author}
+				{thisBlog.title}
+				<br></br>
+				author: {thisBlog.author}
 				<button
 					onClick={() => {
 						setShowAllInfo(false)
@@ -47,10 +61,12 @@ const Blog = ({ blog }) => {
 					hide
 				</button>
 				<br></br>
-				{thisBlog.url}
+				url: {thisBlog.url}
 				<br></br>
-				likes {thisBlog.likes}
+				likes: {thisBlog.likes}
 				<button onClick={() => likePressed(thisBlog)}>like</button>
+				<br></br>
+				<button onClick={() => removePressed(thisBlog)}>remove</button>
 			</div>
 		</div>
 	)
