@@ -10,7 +10,6 @@ const Blog = ({ blog }) => {
 		marginBottom: 5
 	}
 
-
 	const [showAllInfo, setShowAllInfo] = useState(false)
 	const [thisBlog, setThisBlog] = useState(blog)
 
@@ -21,12 +20,14 @@ const Blog = ({ blog }) => {
 	}
 
 	const removePressed = async blog => {
-		const response = await blogService.remove(blog)
+		if (window.confirm(`Are you sure you wish to remove ${blog.title}?`)) {
+			const response = await blogService.remove(blog)
 
-		if (response.status === 204) {
-			setThisBlog(null)
-		} else {
-			console.log("unauthorized delete request")
+			if (response.status === 204) {
+				setThisBlog(null)
+			} else {
+				console.log("unauthorized delete request")
+			}
 		}
 	}
 
@@ -40,7 +41,7 @@ const Blog = ({ blog }) => {
 	return (
 		<div style={blogStyle}>
 			<div style={hideWhenTrue}>
-				{thisBlog.title} 
+				{thisBlog.title}
 				<button
 					onClick={() => {
 						setShowAllInfo(true)
