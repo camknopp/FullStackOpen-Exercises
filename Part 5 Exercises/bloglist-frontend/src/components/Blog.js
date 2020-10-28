@@ -50,7 +50,7 @@ const Blog = ({ blog }) => {
 					view
 				</button>
 			</div>
-			<div className='buttonPressed' style={showWhenTrue}>
+			<div className="buttonPressed" style={showWhenTrue}>
 				{thisBlog.title}
 				<button
 					onClick={() => {
@@ -65,7 +65,9 @@ const Blog = ({ blog }) => {
 				url: {thisBlog.url}
 				<br></br>
 				likes: {thisBlog.likes}
-				<button onClick={() => likePressed(thisBlog)}>like</button>
+				<button className="likeButton" onClick={() => likePressed(thisBlog)}>
+					like
+				</button>
 				<br></br>
 				<button onClick={() => removePressed(thisBlog)}>remove</button>
 			</div>
