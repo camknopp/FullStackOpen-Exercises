@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import blogService from "../services/blogs"
+import PropTypes from 'prop-types'
 
 const CreateForm = ({ setNotificationMessage, setErrorMessage, setBlogs }) => {
 	const [title, setTitle] = useState("")
@@ -59,6 +60,12 @@ const CreateForm = ({ setNotificationMessage, setErrorMessage, setBlogs }) => {
 			<button type="submit">create</button>
 		</form>
 	)
+}
+
+CreateForm.PropTypes - {
+	setNotificationMessage: PropTypes.func.isRequired,
+	setErrorMessage: PropTypes.func.isRequired,
+	setBlogs: PropTypes.func.isRequired
 }
 
 export default CreateForm
