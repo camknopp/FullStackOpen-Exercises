@@ -52,8 +52,6 @@ const Blog = ({ blog }) => {
 			</div>
 			<div style={showWhenTrue}>
 				{thisBlog.title}
-				<br></br>
-				author: {thisBlog.author}
 				<button
 					onClick={() => {
 						setShowAllInfo(false)
@@ -61,6 +59,8 @@ const Blog = ({ blog }) => {
 				>
 					hide
 				</button>
+				<br></br>
+				author: {thisBlog.author}
 				<br></br>
 				url: {thisBlog.url}
 				<br></br>
