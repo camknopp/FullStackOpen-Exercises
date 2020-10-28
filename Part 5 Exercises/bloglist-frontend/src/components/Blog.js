@@ -50,7 +50,7 @@ const Blog = ({ blog }) => {
 					view
 				</button>
 			</div>
-			<div style={showWhenTrue}>
+			<div className='buttonPressed' style={showWhenTrue}>
 				{thisBlog.title}
 				<button
 					onClick={() => {

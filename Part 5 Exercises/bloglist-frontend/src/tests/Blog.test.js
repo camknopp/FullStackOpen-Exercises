@@ -22,21 +22,20 @@ describe("<Blog /> tests", () => {
 	})
 
 	test("button click shows url and likes", () => {
-		const blog = {
-			author: "johnny",
-			title: "Vice",
-			url: "vice.com",
-			likes: 5
-		}
+		const shownText = component.container.querySelector('.buttonPressed')
 
-		const component = render(<Blog blog={blog} />)
+		// extar info not displayed prior button to button press
+		expect(shownText).toHaveStyle(
+			"display: none"
+		)
 
 		const button = component.getByText("view")
 
 		fireEvent.click(button)
 
-		expect(component.container).toHaveTextContent(
-			"Vice author: johnny url: vice.com likes: 5"
+		// extra info displayed after button press
+		expect(shownText).toHaveStyle(
+			""
 		)
 	})
 })
