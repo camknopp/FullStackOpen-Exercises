@@ -33,6 +33,17 @@ describe("blog app", () => {
         cy.get("#loginButton").click()
         cy.get("#errorMessage").should("contain", "invalid credentials")
         cy.get("#errorMessage").should("have.css", "color", 'rgb(255, 0, 0)')
-        //cy.contains("invalid credentials")
+    })
+
+    it("can create new blog", () => {
+        cy.get('#username').type("joe")
+        cy.get("#password").type("joe")
+        cy.get("#loginButton").click()
+        cy.get("#addNewBlog").click()
+        cy.get("#title").type('the joe blog')
+        cy.get("#author").type("joe")
+        cy.get("#url").type("www.google.com")
+        cy.get("#submit").click()
+        cy.get("#notification").should("contain", "added new blog, the joe blog")
     })
 })

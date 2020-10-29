@@ -131,6 +131,7 @@ const App = () => {
 
 			<div style={hideWhenFormVisible}>
 				<button
+					id="addNewBlog"
 					onClick={() => {
 						setShowBlogForm(!showBlogForm)
 					}}
