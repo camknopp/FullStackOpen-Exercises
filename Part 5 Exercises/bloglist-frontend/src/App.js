@@ -74,7 +74,7 @@ const App = () => {
 		return (
 			<div>
 				<h2>Log in to application</h2>
-				<Notification message={notificationMessage} />
+				<Notification  message={notificationMessage} />
 				<ErrorMessage message={errorMessage} />
 				<form onSubmit={handleLogin}>
 					<div>
@@ -104,8 +104,8 @@ const App = () => {
 	return (
 		<div>
 			<h2>blogs</h2>
-			<Notification message={notificationMessage} />
-			<ErrorMessage message={errorMessage} />
+			<Notification id="notification" message={notificationMessage} />
+			<ErrorMessage id="errorMessage" message={errorMessage} />
 			<div>
 				{user.name} is logged in
 				<button type="submit" onClick={handleLogout}>

@@ -8,7 +8,7 @@ const ErrorMessage = ({message}) => {
   } 
 
   return (
-   <div className="error">{message}</div>
+   <div id="errorMessage" className="error">{message}</div>
   )
 }
 
