@@ -43,6 +43,7 @@ const Blog = ({ blog }) => {
 			<div style={hideWhenTrue}>
 				{thisBlog.title}
 				<button
+					id="viewButton"
 					onClick={() => {
 						setShowAllInfo(true)
 					}}
@@ -65,7 +66,7 @@ const Blog = ({ blog }) => {
 				url: {thisBlog.url}
 				<br></br>
 				likes: {thisBlog.likes}
-				<button className="likeButton" onClick={() => likePressed(thisBlog)}>
+				<button id="likeButton" className="likeButton" onClick={() => likePressed(thisBlog)}>
 					like
 				</button>
 				<br></br>

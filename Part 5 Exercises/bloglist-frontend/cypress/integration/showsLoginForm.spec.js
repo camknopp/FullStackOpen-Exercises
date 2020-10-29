@@ -46,4 +46,19 @@ describe("blog app", () => {
         cy.get("#submit").click()
         cy.get("#notification").should("contain", "added new blog, the joe blog")
     })
+
+    it("user can like a blog", () => {
+        cy.get('#username').type("joe")
+        cy.get("#password").type("joe")
+        cy.get("#loginButton").click()
+        cy.get("#addNewBlog").click()
+        cy.get("#title").type('the joe blog')
+        cy.get("#author").type("joe")
+        cy.get("#url").type("www.google.com")
+        cy.get("#submit").click()
+        cy.get("#viewButton").click()
+        cy.get("#likeButton").click()
+        cy.contains("likes: 1")
+
+    })
 })
