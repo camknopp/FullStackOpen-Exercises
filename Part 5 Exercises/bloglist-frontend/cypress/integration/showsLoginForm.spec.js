@@ -74,31 +74,31 @@ describe("blog app", () => {
 		cy.get("#removeButton").click()
 		cy.on("window:confirm", () => true)
 		cy.get("html").should("not.contain", "the joe blog")
-    })
-    
-    it("user cannot delete blog they didn't create", () => {
-        const user = {
+	})
+
+	it("user cannot delete blog they didn't create", () => {
+		const user = {
 			name: "Susie",
 			username: "susie",
 			password: "susie"
 		}
 		cy.request("POST", "http://localhost:3001/api/users/", user)
 
-        cy.get('#username').type("joe")
-        cy.get("#password").type("joe")
-        cy.get("#loginButton").click()
-        cy.get("#addNewBlog").click()
-        cy.get("#title").type('the joe blog')
-        cy.get("#author").type("joe")
-        cy.get("#url").type("www.google.com")
-        cy.get("#submit").click()
-        cy.get("#logoutButton").click()
-        cy.get('#username').type("susie")
-        cy.get("#password").type("susie")
-        cy.get("#loginButton").click()
-        cy.get("#viewButton").click()
-        cy.get("#removeButton").click()
-        cy.on("window:confirm", () => true)
-        cy.get('html').should("contain", "the joe blog")
-    })
+		cy.get("#username").type("joe")
+		cy.get("#password").type("joe")
+		cy.get("#loginButton").click()
+		cy.get("#addNewBlog").click()
+		cy.get("#title").type("the joe blog")
+		cy.get("#author").type("joe")
+		cy.get("#url").type("www.google.com")
+		cy.get("#submit").click()
+		cy.get("#logoutButton").click()
+		cy.get("#username").type("susie")
+		cy.get("#password").type("susie")
+		cy.get("#loginButton").click()
+		cy.get("#viewButton").click()
+		cy.get("#removeButton").click()
+		cy.on("window:confirm", () => true)
+		cy.get("html").should("contain", "the joe blog")
+	})
 })
