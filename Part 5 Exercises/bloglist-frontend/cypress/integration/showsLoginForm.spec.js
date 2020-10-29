@@ -18,24 +18,72 @@ describe("blog app", () => {
 		cy.contains("password")
 		cy.get("#username")
 		cy.get("#password")
+	})
+
+	it("Correct credentials leads to successful login", () => {
+		cy.get("#username").type("joe")
+		cy.get("#password").type("joe")
+		cy.get("#loginButton").click()
+		cy.contains("Welcome back joe")
+	})
+
+	it("Incorrect credentials leads to failed login", () => {
+		cy.get("#username").type("joe")
+		cy.get("#password").type("shmoe")
+		cy.get("#loginButton").click()
+		cy.get("#errorMessage").should("contain", "invalid credentials")
+		cy.get("#errorMessage").should("have.css", "color", "rgb(255, 0, 0)")
+	})
+
+	it("can create new blog", () => {
+		cy.get("#username").type("joe")
+		cy.get("#password").type("joe")
+		cy.get("#loginButton").click()
+		cy.get("#addNewBlog").click()
+		cy.get("#title").type("the joe blog")
+		cy.get("#author").type("joe")
+		cy.get("#url").type("www.google.com")
+		cy.get("#submit").click()
+		cy.get("#notification").should("contain", "added new blog, the joe blog")
+	})
+
+	it("user can like a blog", () => {
+		cy.get("#username").type("joe")
+		cy.get("#password").type("joe")
+		cy.get("#loginButton").click()
+		cy.get("#addNewBlog").click()
+		cy.get("#title").type("the joe blog")
+		cy.get("#author").type("joe")
+		cy.get("#url").type("www.google.com")
+		cy.get("#submit").click()
+		cy.get("#viewButton").click()
+		cy.get("#likeButton").click()
+		cy.contains("likes: 1")
+	})
+
+	it("user can delete blog that they created", () => {
+		cy.get("#username").type("joe")
+		cy.get("#password").type("joe")
+		cy.get("#loginButton").click()
+		cy.get("#addNewBlog").click()
+		cy.get("#title").type("the joe blog")
+		cy.get("#author").type("joe")
+		cy.get("#url").type("www.google.com")
+		cy.get("#submit").click()
+		cy.get("#viewButton").click()
+		cy.get("#removeButton").click()
+		cy.on("window:confirm", () => true)
+		cy.get("html").should("not.contain", "the joe blog")
     })
     
-    it("Correct credentials leads to successful login", () => {
-        cy.get('#username').type("joe")
-        cy.get("#password").type("joe")
-        cy.get("#loginButton").click()
-        cy.contains("Welcome back joe")
-    })
+    it("user cannot delete blog they didn't create", () => {
+        const user = {
+			name: "Susie",
+			username: "susie",
+			password: "susie"
+		}
+		cy.request("POST", "http://localhost:3001/api/users/", user)
 
-    it("Incorrect credentials leads to failed login", () => {
-        cy.get('#username').type("joe")
-        cy.get("#password").type("shmoe")
-        cy.get("#loginButton").click()
-        cy.get("#errorMessage").should("contain", "invalid credentials")
-        cy.get("#errorMessage").should("have.css", "color", 'rgb(255, 0, 0)')
-    })
-
-    it("can create new blog", () => {
         cy.get('#username').type("joe")
         cy.get("#password").type("joe")
         cy.get("#loginButton").click()
@@ -44,21 +92,13 @@ describe("blog app", () => {
         cy.get("#author").type("joe")
         cy.get("#url").type("www.google.com")
         cy.get("#submit").click()
-        cy.get("#notification").should("contain", "added new blog, the joe blog")
-    })
-
-    it("user can like a blog", () => {
-        cy.get('#username').type("joe")
-        cy.get("#password").type("joe")
+        cy.get("#logoutButton").click()
+        cy.get('#username').type("susie")
+        cy.get("#password").type("susie")
         cy.get("#loginButton").click()
-        cy.get("#addNewBlog").click()
-        cy.get("#title").type('the joe blog')
-        cy.get("#author").type("joe")
-        cy.get("#url").type("www.google.com")
-        cy.get("#submit").click()
         cy.get("#viewButton").click()
-        cy.get("#likeButton").click()
-        cy.contains("likes: 1")
-
+        cy.get("#removeButton").click()
+        cy.on("window:confirm", () => true)
+        cy.get('html').should("contain", "the joe blog")
     })
 })

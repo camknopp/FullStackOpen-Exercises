@@ -70,7 +70,7 @@ const Blog = ({ blog }) => {
 					like
 				</button>
 				<br></br>
-				<button onClick={() => removePressed(thisBlog)}>remove</button>
+				<button id="removeButton" onClick={() => removePressed(thisBlog)}>remove</button>
 			</div>
 		</div>
 	)

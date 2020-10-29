@@ -108,7 +108,7 @@ const App = () => {
 			<ErrorMessage id="errorMessage" message={errorMessage} />
 			<div>
 				{user.name} is logged in
-				<button type="submit" onClick={handleLogout}>
+				<button id="logoutButton" type="submit" onClick={handleLogout}>
 					logout
 				</button>
 			</div>
