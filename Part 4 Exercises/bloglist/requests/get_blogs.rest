@@ -9,7 +9,9 @@
 # 	"likes": 1341341
 # }
 
-GET http://localhost:3003/api/blogs
+# GET http://localhost:3003/api/blogs
+
+POST http://localhost:3001/api/testing/reset
 
 # DELETE http://localhost:3003/api/blogs/5f92c91bbadec8e64ac12987
 # Content-Type: application/json
