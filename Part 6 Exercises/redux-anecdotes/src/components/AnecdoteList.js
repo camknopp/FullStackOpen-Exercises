@@ -2,10 +2,20 @@ import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { vote } from "../reducers/anecdoteReducer"
 import { setNotification, removeNotification }  from "../reducers/notificationReducer"
+import Filter from "../components/Filter"
 
 const AnecdoteList = () => {
-    const dispatch = useDispatch()
-    const anecdotes = useSelector(state => state.anecdotes)
+	const dispatch = useDispatch()
+	const anecdotes = useSelector(state => {
+		const currFilter = state.filter.filter
+
+		if (currFilter === "") {
+			return state.anecdotes
+		} 
+		else {
+			return state.anecdotes.filter(anec => anec.content.toLowerCase().includes(currFilter))
+		}
+	})
 
     const compare = (a, b) => {
 		if (a.votes > b.votes) {
@@ -28,6 +38,7 @@ const AnecdoteList = () => {
 
 	return (
 		<div>
+			filter <Filter />
 			<h2>Anecdotes</h2>
 			{anecdotes.sort(compare).map(anecdote => (
 				<div key={anecdote.id}>
