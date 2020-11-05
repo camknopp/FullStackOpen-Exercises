@@ -4,6 +4,7 @@ import notificationReducer from "./reducers/notificationReducer"
 import filterReducer from "./reducers/filterReducer"
 import { createStore, combineReducers } from "redux"
 import anecdoteService from "./services/anecdotes"
+import thunk from "redux-thunk"
 
 const reducer = combineReducers({
 	anecdotes: anecdoteReducer,
@@ -11,7 +12,9 @@ const reducer = combineReducers({
 	filter: filterReducer
 })
 
-const store = createStore(reducer, composeWithDevTools())
+const store = createStore(reducer, composeWithDevTools(
+    applyMiddleware(thunk)
+))
 
 anecdoteService.getAll().then(anecs => {
 	anecs.forEach(anec => {
