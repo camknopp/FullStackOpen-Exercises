@@ -1,43 +1,20 @@
 import React, { useState } from "react"
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
-
-const Menu = () => {
-	const padding = {
-		paddingRight: 5
-	}
-	return (
-		// <Router>
-		<div>
-			<a href="#" style={padding}>
-				anecdotes
-			</a>
-			{/* <Link style={padding} to="/">
-					anecdotes
-				</Link> */}
-			<a href="#" style={padding}>
-				create new
-			</a>
-			{/* <Link style={padding} to="/notes">
-					create new
-				</Link> */}
-
-			<a href="#" style={padding}>
-				about
-			</a>
-			{/* <Link style={padding} to="/about">
-					about
-				</Link> */}
-		</div>
-		// </Router>
-	)
-}
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link,
+	useRouteMatch
+} from "react-router-dom"
 
 const AnecdoteList = ({ anecdotes }) => (
 	<div>
 		<h2>Anecdotes</h2>
 		<ul>
 			{anecdotes.map(anecdote => (
-				<li key={anecdote.id}>{anecdote.content}</li>
+				<li key={anecdote.id}>
+					<a href={`/anecdotes/${anecdote.id}`}>{anecdote.content}</a>
+				</li>
 			))}
 		</ul>
 	</div>
@@ -128,6 +105,22 @@ const CreateNew = props => {
 	)
 }
 
+const ShowAnecdote = ({ anecdote }) => {
+	if (anecdote) {
+		return (
+			<div>
+				<h2>{anecdote.content}</h2>
+				<p>has {anecdote.votes} votes</p>
+				<p>
+					for more info see <a href={anecdote.info}>{anecdote.info}</a>
+				</p>
+			</div>
+		)
+	} else {
+		return <div></div>
+	}
+}
+
 const App = () => {
 	const [anecdotes, setAnecdotes] = useState([
 		{
@@ -170,36 +163,48 @@ const App = () => {
 		paddingRight: 5
 	}
 
+	const match = useRouteMatch("/anecdotes/:id")
+	console.log(match)
+
+	const anec = match
+		? anecdotes.find(
+				anecdote => Number(anecdote.id) === Number(match.params.id)
+		  )
+		: null
+	console.log(anecdotes)
+	console.log(anec)
+
 	return (
 		<div>
 			<h1>Software anecdotes</h1>
-			<Router>
-				<div>
-					<Link style={padding} to="/">
-						anecdotes
-					</Link>
+			<div>
+				<Link style={padding} to="/">
+					anecdotes
+				</Link>
 
-					<Link style={padding} to="/create">
-						create new
-					</Link>
+				<Link style={padding} to="/create">
+					create new
+				</Link>
 
-					<Link style={padding} to="/about">
-						about
-					</Link>
-				</div>
+				<Link style={padding} to="/about">
+					about
+				</Link>
+			</div>
 
-				<Switch>
-					<Route path="/about">
-						<About />
-					</Route>
-					<Route path="/create">
-						<CreateNew addNew={addNew} />
-					</Route>
-          <Route path="/">
-						<AnecdoteList anecdotes={anecdotes} />
-					</Route>
-				</Switch>
-			</Router>
+			<Switch>
+				<Route path="/about">
+					<About />
+				</Route>
+				<Route path="/create">
+					<CreateNew addNew={addNew} />
+				</Route>
+				<Route path="/anecdotes/:id">
+					<ShowAnecdote anecdote={anec} />
+				</Route>
+				<Route path="/">
+					<AnecdoteList anecdotes={anecdotes} />
+				</Route>
+			</Switch>
 			<Footer />
 		</div>
 	)
