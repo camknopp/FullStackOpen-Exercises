@@ -76,6 +76,12 @@ const CreateNew = props => {
 		})
 	}
 
+	const resetValues = () => {
+		content.reset()
+		author.reset()
+		info.reset()
+	}
+
 	return (
 		<div>
 			<h2>create a new anecdote</h2>
@@ -83,31 +89,25 @@ const CreateNew = props => {
 				<div>
 					content
 					<input
-						{...content}
-						// name="content"
-						// value={content}
-						// onChange={e => setContent(e.target.value)}
+						name={content.name}
+						value={content.value}
+						onChange={content.onChange}
 					/>
 				</div>
 				<div>
 					author
 					<input
-						{...author}
-						// name="author"
-						// value={author}
-						// onChange={e => setAuthor(e.target.value)}
+						name={author.name}
+						value={author.value}
+						onChange={author.onChange}
 					/>
 				</div>
 				<div>
 					url for more info
-					<input
-						{...info}
-						// name="info"
-						// value={info}
-						// onChange={e => setInfo(e.target.value)}
-					/>
+					<input name={info.name} value={info.value} onChange={info.onChange} />
 				</div>
 				<button>create</button>
+				<button onClick={resetValues} >reset</button>
 			</form>
 		</div>
 	)
