@@ -1,0 +1,32 @@
+{
+  "notes": [
+    {
+      "content": "custom-hookit aivan mahtavia",
+      "id": 1
+    },
+    {
+      "content": "paras feature ikinä <3",
+      "id": 2
+    },
+    {
+      "content": "asldkfjsadj",
+      "id": 7
+    },
+    {
+      "content": "Making a note...",
+      "id": 8
+    }
+  ],
+  "persons": [
+    {
+      "name": "mluukkai",
+      "number": "040-5483923",
+      "id": 1
+    },
+    {
+      "name": "Joe Shmoe",
+      "number": "134134134",
+      "id": 8
+    }
+  ]
+}
